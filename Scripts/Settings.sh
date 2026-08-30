@@ -28,12 +28,12 @@ apply_sed_to_matches "./feeds/luci/modules/luci-mod-status/" "10_system.js" "s/(
 
 WIFI_SH=$(find ./target/linux/{mediatek/filogic,qualcommax}/base-files/etc/uci-defaults/ -type f -name "*set-wireless.sh" 2>/dev/null)
 WIFI_UC="./package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc"
-if [ -f "$WIFI_SH" ]; then
+if [ -f "$WIFI_SH" ] && [ -n "$WRT_SSID" ]; then
 	#修改WIFI名称
 	sed -i "s/BASE_SSID='.*'/BASE_SSID='$WRT_SSID'/g" "$WIFI_SH"
 	#修改WIFI密码
 	sed -i "s/BASE_WORD='.*'/BASE_WORD='$WRT_WORD'/g" "$WIFI_SH"
-elif [ -f "$WIFI_UC" ]; then
+elif [ -f "$WIFI_UC" ] && [ -n "$WRT_SSID" ]; then
 	#修改WIFI名称
 	sed -i "s/ssid='.*'/ssid='$WRT_SSID'/g" $WIFI_UC
 	#修改WIFI密码
