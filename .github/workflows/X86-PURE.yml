@@ -1,5 +1,5 @@
 name: 
-  x86 Make Image
+  X86-PURE
 
 permissions:
   contents: write
