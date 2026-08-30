@@ -8,27 +8,15 @@ on:
   workflow_dispatch:
     inputs:
       WRT_CONFIG:
-        default: x86
-        required: true
-        type: string
-      WRT_THEME:
-        default: aurora
+        default: x86.txt
         required: true
         type: string
       WRT_NAME:
         default: opx86
         required: true
         type: string
-      WRT_SSID:
-        default: opx86
-        required: true
-        type: string
-      WRT_WORD:
-        default: 12345678
-        required: true
-        type: string
       WRT_IP:
-        default: 192.168.50.236
+        default: 192.168.50.238
         required: true
         type: string
       WRT_PW:
@@ -58,10 +46,7 @@ on:
 env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   WRT_CONFIG: ${{inputs.WRT_CONFIG}}
-  WRT_THEME: ${{inputs.WRT_THEME}}
   WRT_NAME: ${{inputs.WRT_NAME}}
-  WRT_SSID: ${{inputs.WRT_SSID}}
-  WRT_WORD: ${{inputs.WRT_WORD}}
   WRT_IP: ${{inputs.WRT_IP}}
   WRT_PW: ${{inputs.WRT_PW}}
   WRT_REPO: ${{inputs.WRT_REPO}}
@@ -224,7 +209,7 @@ jobs:
             echo "WRT_LIST=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^luci-(app|theme)[^ ]*' {} \; | tr '\n' ' ')" >> $GITHUB_ENV
 
             find ./bin/targets/ -iregex ".*\(buildinfo\|json\|sha256sums\|packages\)$" -exec rm -rf {} +
-
+            ls ./bin/targets/
             for FILE in $(find ./bin/targets/ -type f -iname "*$WRT_TARGET*") ; do
               EXT=$(basename $FILE | cut -d '.' -f 2-)
               NAME=$(basename $FILE | cut -d '.' -f 1 | grep -io "\($WRT_TARGET\).*")
@@ -241,14 +226,8 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{env.WRT_BRANCH}}-${{env.WRT_DATE}}
-          files: ./wrt/upload/!(*-bl2.bin)
+          files: ./wrt/upload/*.*
           body: |
-            这是个平台固件包，内含多个设备！
-            请注意选择你需要的设备固件！
-            不要问，刷就完事了！
-
-            全系带开源硬件加速，别问了！
-
             源码：${{env.WRT_REPO}}
             分支：${{env.WRT_BRANCH}}
             提交：${{env.WRT_HASH}}
@@ -258,9 +237,6 @@ jobs:
 
             登录地址：${{env.WRT_IP}}
             登录密码：${{env.WRT_PW}}
-
-            WIFI名称：${{env.WRT_SSID}}
-            WIFI密码：${{env.WRT_WORD}}
 
             内核版本：${{env.WRT_KVER}}
             插件列表：${{env.WRT_LIST}}
