@@ -11,6 +11,10 @@ on:
         default: x86.txt
         required: true
         type: string
+      WRT_THEME:
+        default: aurora
+        required: true
+        type: string
       WRT_NAME:
         default: opx86
         required: true
@@ -46,6 +50,7 @@ on:
 env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   WRT_CONFIG: ${{inputs.WRT_CONFIG}}
+  WRT_THEME: ${{inputs.WRT_THEME}}
   WRT_NAME: ${{inputs.WRT_NAME}}
   WRT_IP: ${{inputs.WRT_IP}}
   WRT_PW: ${{inputs.WRT_PW}}
