@@ -75,6 +75,11 @@ fi
 # 智能系统调优：优化内存水位线 (min_free_kbytes)
 # =========================================================
 
+if [ -n "$WRT_MEM" ] && [ "$WRT_MEM" -eq 0 ]; then
+    echo "Memory patch: WRT_MEM is explicitly set to 0. Exiting."
+    exit 0
+fi
+
 MIN_FREE_VAL=16384
 CONF_FILE="./package/base-files/files/etc/sysctl.conf"
 
