@@ -70,7 +70,8 @@ UPDATE_PACKAGE2() {
         
         # 加上 -follow，让 find 把软链接也当作真正的目录去计算层级和搜索
         local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -follow -type d -iname "*$NAME*" 2>/dev/null)
-
+        echo "found dir: $FOUND_DIRS"
+		
 		if [ -n "$FOUND_DIRS" ]; then
 		    while read -r DIR; do
 				rm -rf "$DIR"
@@ -115,7 +116,8 @@ UPDATE_PACKAGE2() {
 	
     (IFS=" | "; echo "Done: ${PKG_NAMES[*]}")
 }
-
+echo "remove sing-box"
+rm -rf ../feeds/packages/net/sing-box
 echo "list net"
 ls ../feeds/packages/net/
 
