@@ -67,7 +67,7 @@ UPDATE_PACKAGE2() {
 		
 		echo "Search directory: $NAME"
 		#local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 4 -type d -iname "*$NAME*" 2>/dev/null)
-        lical FOUND_DIRS=$(find ../feeds/ -follow -type d -name "$NAME" 2>/dev/null)
+        local FOUND_DIRS=$(find ../feeds/ -follow -type d -name "$NAME" 2>/dev/null)
 
 		if [ -n "$FOUND_DIRS" ]; then
 		    while read -r DIR; do
