@@ -66,8 +66,10 @@ UPDATE_PACKAGE2() {
 		fi
 		
 		echo "Search directory: $NAME"
-		#local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 4 -type d -iname "*$NAME*" 2>/dev/null)
-        local FOUND_DIRS=$(find ../feeds/ -follow -type d -name "$NAME" 2>/dev/null)
+		#local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$NAME*" 2>/dev/null)
+        
+        # 加上 -follow，让 find 把软链接也当作真正的目录去计算层级和搜索
+        local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -follow -type d -iname "*$NAME*" 2>/dev/null)
 
 		if [ -n "$FOUND_DIRS" ]; then
 		    while read -r DIR; do
