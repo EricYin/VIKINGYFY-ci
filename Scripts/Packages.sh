@@ -47,6 +47,72 @@ UPDATE_PACKAGE() {
 	fi
 }
 
+UPDATE_PACKAGE2() {
+	local -n PKG_NAMES=$1
+	local PKG_REPO=$2
+	local PKG_BRANCH=$3
+	local PKG_SPECIAL=$4
+	local REPO_NAME=${PKG_REPO#*/}
+
+	echo " "
+	echo "=========================================="
+	(IFS=" | "; echo "Processing: ${PKG_NAMES[*]} from $PKG_REPO, repository: $REPO_NAME, branch: $PKG_BRANCH" )
+	echo "=========================================="
+
+	# 删除 feeds 中可能存在的同名软件包
+	for NAME in "${PKG_NAMES[@]}"; do
+	    if [ -z "$NAME" ]; then
+		    continue
+		fi
+		
+		echo "Search directory: $NAME"
+		local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$NAME*" 2>/dev/null)
+
+		if [ -n "$FOUND_DIRS" ]; then
+		    while read -r DIR; do
+				rm -rf "$DIR"
+				echo "Delete directory: $DIR"
+			done <<< "$FOUND_DIRS"
+		else
+			echo "Not found directory: $NAME"
+		fi
+	done
+
+	# 克隆 GitHub 仓库
+	git clone --depth=1 --single-branch --branch "$PKG_BRANCH" "https://github.com/$PKG_REPO.git"
+
+	if [ ! -d "$REPO_NAME" ]; then
+	    ls
+		echo "ERROR: Failed to clone $PKG_REPO"
+		return 1
+	fi
+
+	# 处理克隆的仓库
+	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
+	   for NAME in "${PKG_NAMES[@]}"; do
+		    if [[ "$REPO_NAME" == "$NAME" ]]; then
+			   echo "Rename repository folder to ${REPO_NAME}1 as it is same as target pkg folder"
+			   mv ./$REPO_NAME ./${REPO_NAME}1
+			   REPO_NAME=${REPO_NAME}1
+			   break
+			fi
+		done
+		# 从大杂烩仓库中提取特定包
+		for NAME in "${PKG_NAMES[@]}"; do
+	        if [ -z "$NAME" ]; then
+		        continue
+		    fi
+		    find ./$REPO_NAME/*/ -maxdepth 3 -type d -iname "*$NAME*" -prune -exec cp -rf {} ./ \;
+		done
+		rm -rf ./$REPO_NAME/
+	# elif [[ "$PKG_SPECIAL" == "name" ]]; then
+		# 重命名仓库
+	#	mv -f $REPO_NAME $PKG_NAME
+	fi
+	
+    (IFS=" | "; echo "Done: ${PKG_NAMES[*]}")
+}
+
 # 调用示例
 # UPDATE_PACKAGE "OpenAppFilter" "destan19/OpenAppFilter" "master" "" "custom_name1 custom_name2"
 # UPDATE_PACKAGE "open-app-filter" "destan19/OpenAppFilter" "master" "" "luci-app-appfilter oaf" 这样会把原有的open-app-filter，luci-app-appfilter，oaf相关组件删除，不会出现coremark错误。
@@ -59,7 +125,10 @@ UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 #UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "master"
 #UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
 
-UPDATE_PACKAGE "homeproxy" "immortalwrt/homeproxy" "master"
+# file explorer
+pkgs=("luci-app-quickfile-go"); UPDATE_PACKAGE2 pkgs "ericyin/luci-app-quickfile-go" "main" "pkg"; unset pkgs
+pkgs=("sing-box", "luci-app-homeproxy"); UPDATE_PACKAGE2 pkgs "ericyin/luci-app-homeproxy" "main" "pkg"; unset pkgs
+
 #UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 #UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 if [[ "${WRT_PROFILE^^}" == "PLUS" ]]; then
