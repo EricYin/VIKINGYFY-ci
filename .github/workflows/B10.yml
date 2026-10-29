@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       #max-parallel: 3
       matrix:     
-        CONFIG: [IPQ95XX]
+        CONFIG: [B10]
         PROFILE: [PURE]
         SOURCE: [EricYin/immortalwrt]
         BRANCH: [VIKINGYFY-owrt-custom]
