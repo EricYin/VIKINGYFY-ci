@@ -257,6 +257,16 @@ jobs:
             echo "WRT_KVER=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^kernel - \K[\d\.]+' {} \;)" >> $GITHUB_ENV
             echo "WRT_LIST=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^luci-(app|theme)[^ ]*' {} \; | tr '\n' ' ')" >> $GITHUB_ENV
 
+            original_dir="$PWD"
+            echo "list openwrt/bin/targets"
+            ls ./bin/targets
+            cd ./bin/targets/*/*                     
+            cat sha256sums           
+            tar -zcf Packages.tar.gz packages          
+            //echo "PACKAGES=$PWD" >> $GITHUB_ENV            
+            cd original_dir
+            mv Packages.tar.gz ./upload/
+            
             find ./bin/targets/ -iregex ".*\(buildinfo\|json\|sha256sums\|packages\)$" -exec rm -rf {} +
 
             for FILE in $(find ./bin/targets/ -type f -iname "*$WRT_TARGET*") ; do
@@ -275,6 +285,12 @@ jobs:
 
             make clean -j$(nproc)
           fi
+          
+      # - name: Upload firmware artifacts
+      #   uses: actions/upload-artifact@v6
+      #   with:
+      #     name: packages
+      #     path: ${{ env.PACKAGES }}/*
 
       - name: Build Summary
         run: |
@@ -297,7 +313,7 @@ jobs:
           tag_name: ${{ env.WRT_CONFIG }}-${{ env.WRT_PROFILE }}-${{ env.WRT_INFO }}-${{ env.WRT_BRANCH }}-${{ env.WRT_DATE }}
           files: ./wrt/upload/*.*
           body: |
-            📦 OpenWrt 自动编译固件（AX6600 / IPQ6010）
+            📦 OpenWrt 自动编译固件
             ━━━━━━━━━━━━━━━━━━━━━━━
 
             📌 基本信息
@@ -316,7 +332,7 @@ jobs:
             🧩 设备与平台
             设备型号：${{ env.WRT_SOURCE }}
             硬件平台：${{ env.WRT_TARGET }}
-            CPU架构：Qualcomm IPQ6010 / IPQ60xx
+            CPU架构：Qualcomm
             ━━━━━━━━━━━━━━━━━━━━━━━
 
             ⚙️ 固件特性
