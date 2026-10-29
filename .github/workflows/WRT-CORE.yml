@@ -258,12 +258,11 @@ jobs:
             echo "WRT_LIST=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^luci-(app|theme)[^ ]*' {} \; | tr '\n' ' ')" >> $GITHUB_ENV
 
             original_dir="$PWD"
-            echo "list openwrt/bin/targets"
+            echo "list ./bin/targets"
             ls ./bin/targets
             cd ./bin/targets/*/*                     
             cat sha256sums           
-            tar -zcf Packages.tar.gz packages          
-            //echo "PACKAGES=$PWD" >> $GITHUB_ENV            
+            tar -zcf Packages.tar.gz packages   
             cd original_dir
             mv Packages.tar.gz ./upload/
             
