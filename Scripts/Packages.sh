@@ -130,9 +130,9 @@ UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 #UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
 
 # file explorer
-pkgs=("luci-app-quickfile-go"); UPDATE_PACKAGE2 pkgs "ericyin/luci-app-quickfile-go" "main" "pkg"; unset pkgs
-UPDATE_PACKAGE "homeproxy" "immortalwrt/homeproxy" "master"
-#pkgs=("sing-box" "luci-app-homeproxy"); UPDATE_PACKAGE2 pkgs "ericyin/luci-app-homeproxy" "main" "pkg"; unset pkgs
+#pkgs=("luci-app-quickfile-go"); UPDATE_PACKAGE2 pkgs "ericyin/luci-app-quickfile-go" "main" "pkg"; unset pkgs
+#UPDATE_PACKAGE "homeproxy" "immortalwrt/homeproxy" "master"
+#pkgs=("sing-box" "luci-app-homeproxy"); UPDATE_PACKAGE2 pkgs "ericyin/luci-app-homeproxy" "legacy" "pkg"; unset pkgs
 
 #UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 #UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
