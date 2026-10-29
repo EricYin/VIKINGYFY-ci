@@ -1,5 +1,5 @@
 #CI项目
-name: QCA-PURE
+name: RE-CS-02
 
 #CI计划
 on:
@@ -33,7 +33,7 @@ jobs:
       #max-parallel: 3
       matrix:
         #CONFIG: [IPQ60XX-WIFI-YES, IPQ60XX-WIFI-NO, IPQ807X-WIFI-YES, IPQ807X-WIFI-NO]
-        CONFIG: [IPQ60XX-WIFI-YES]
+        CONFIG: [RE-CS-02]
         PROFILE: [PURE]
         SOURCE: [EricYin/immortalwrt]
         BRANCH: [VIKINGYFY-main-6.18]
@@ -44,8 +44,8 @@ jobs:
       #编译配置
       WRT_CONFIG: ${{matrix.CONFIG}}
       #默认主题
-      #WRT_THEME: aurora
-      WRT_THEME: bootstrap
+      WRT_THEME: aurora
+      #WRT_THEME: bootstrap
       #默认主机名
       WRT_NAME: YADIANNA
       #默认WIFI名称
