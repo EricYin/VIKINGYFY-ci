@@ -62,39 +62,39 @@ if [ -n "$WRT_PACKAGE" ]; then
 fi
 
 #高通平台调整
-DTS_PATH="./target/linux/qualcommax/dts/"
-if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
-	#无WIFI配置调整Q6大小
-	if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
-		find "$DTS_PATH" -type f ! -iname '*nowifi*' -exec sed -i 's/ipq\(6018\|8074\).dtsi/ipq\1-nowifi.dtsi/g' {} +
-		echo "qualcommax set up nowifi successfully!"
-	fi
-fi
+# DTS_PATH="./target/linux/qualcommax/dts/"
+# if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
+# 	#无WIFI配置调整Q6大小
+# 	if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
+# 		find "$DTS_PATH" -type f ! -iname '*nowifi*' -exec sed -i 's/ipq\(6018\|8074\).dtsi/ipq\1-nowifi.dtsi/g' {} +
+# 		echo "qualcommax set up nowifi successfully!"
+# 	fi
+# fi
 
-# =========================================================
-# 智能系统调优：优化内存水位线 (min_free_kbytes)
-# =========================================================
+# # =========================================================
+# # 智能系统调优：优化内存水位线 (min_free_kbytes)
+# # =========================================================
 
-if [ -n "$WRT_MEM" ] && [ "$WRT_MEM" -eq 0 ]; then
-    echo "Memory patch: WRT_MEM is explicitly set to 0. Exiting."
-    exit 0
-fi
+# if [ -n "$WRT_MEM" ] && [ "$WRT_MEM" -eq 0 ]; then
+#     echo "Memory patch: WRT_MEM is explicitly set to 0. Exiting."
+#     exit 0
+# fi
 
-MIN_FREE_VAL=16384
-CONF_FILE="./package/base-files/files/etc/sysctl.conf"
+# MIN_FREE_VAL=16384
+# CONF_FILE="./package/base-files/files/etc/sysctl.conf"
 
-# 提取当前值（只匹配非注释、行首）
-CURRENT_VAL=$(sed -n 's/^vm\.min_free_kbytes=\([0-9]\+\).*/\1/p' "$CONF_FILE")
+# # 提取当前值（只匹配非注释、行首）
+# CURRENT_VAL=$(sed -n 's/^vm\.min_free_kbytes=\([0-9]\+\).*/\1/p' "$CONF_FILE")
 
-if [ -z "$CURRENT_VAL" ]; then
-    echo "" >> "$CONF_FILE"
-    echo "vm.min_free_kbytes=$MIN_FREE_VAL" >> "$CONF_FILE"
-    echo "Memory patch: value not found, added $MIN_FREE_VAL."
-else
-    if [ "$CURRENT_VAL" -lt "$MIN_FREE_VAL" ]; then
-        sed -i "s/^vm\.min_free_kbytes=.*/vm.min_free_kbytes=$MIN_FREE_VAL/" "$CONF_FILE"
-        echo "Memory patch: upgraded $CURRENT_VAL -> $MIN_FREE_VAL."
-    else
-        echo "Memory patch: current value ($CURRENT_VAL) is sufficient, skipped."
-    fi
-fi
+# if [ -z "$CURRENT_VAL" ]; then
+#     echo "" >> "$CONF_FILE"
+#     echo "vm.min_free_kbytes=$MIN_FREE_VAL" >> "$CONF_FILE"
+#     echo "Memory patch: value not found, added $MIN_FREE_VAL."
+# else
+#     if [ "$CURRENT_VAL" -lt "$MIN_FREE_VAL" ]; then
+#         sed -i "s/^vm\.min_free_kbytes=.*/vm.min_free_kbytes=$MIN_FREE_VAL/" "$CONF_FILE"
+#         echo "Memory patch: upgraded $CURRENT_VAL -> $MIN_FREE_VAL."
+#     else
+#         echo "Memory patch: current value ($CURRENT_VAL) is sufficient, skipped."
+#     fi
+# fi
