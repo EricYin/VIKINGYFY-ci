@@ -262,9 +262,9 @@ jobs:
             ls ./bin/targets
             cd ./bin/targets/*/*                     
             cat sha256sums           
-            tar -zcf Packages.tar.gz packages   
-            cd original_dir
-            mv Packages.tar.gz ./upload/
+            tar -zcf Packages.tar.gz packages
+            mv Packages.tar.gz $original_dir/upload/
+            cd "$original_dir"
             
             find ./bin/targets/ -iregex ".*\(buildinfo\|json\|sha256sums\|packages\)$" -exec rm -rf {} +
 
