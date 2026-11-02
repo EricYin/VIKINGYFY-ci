@@ -177,6 +177,7 @@ CONFIG_PACKAGE_xz-utils=y
 CONFIG_PACKAGE_luci-theme-aurora=y
 CONFIG_PACKAGE_ucode-mod-math=y
 
+CONFIG_PACKAGE_vsftpd=y
 CONFIG_PACKAGE_shadow-utils=y
 CONFIG_PACKAGE_libustream-openssl=y
 CONFIG_PACKAGE_luci-ssl-openssl=y
