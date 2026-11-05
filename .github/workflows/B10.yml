@@ -46,7 +46,7 @@ jobs:
       WRT_THEME: aurora
       #WRT_THEME: bootstrap
       #默认主机名
-      WRT_NAME: B10
+      WRT_NAME: Nokia-B10
       #默认WIFI名称
       WRT_SSID: AS_4200
       #默认WIFI密码
