@@ -27,7 +27,7 @@ on:
         type: boolean
 
 env:
-  CONFIG_FILE: "Config/B10-OP.txt"
+  CONFIG_FILE: "Config/b10_OP_MEM.txt"
   FEEDS_CONF: feeds.conf.default
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
