@@ -37,7 +37,7 @@ env:
   CCACHE_MAXSIZE: 5G
   TZ: Asia/Shanghai
   WRT_MARK: "OpenWrt"
-  WRT_THEME: "bootstrap"
+  WRT_THEME: "aurora"
   WRT_NAME: Nokia-B10
   WRT_IP: 192.168.50.1
   WRT_SSID: AS4200_5G2
